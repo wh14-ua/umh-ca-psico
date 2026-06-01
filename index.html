@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de Psicología · 110 preguntas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF5EA; --paper2:#F4EBDA; --ink:#211C16; --ink2:#4A4034;
+  --line:#E2D5BE; --accent:#BE4B2B; --accent2:#9A3C20;
+  --ok:#2F7A56; --ok-bg:#E7F2EA; --bad:#B23A2E; --bad-bg:#F8E7E3;
+  --teal:#2C6E6B; --gold:#C98A2B;
+  --shadow:0 1px 0 #fff7 inset, 0 10px 30px -12px #3a2c1840;
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{
+  min-height:100vh;
+  background-image:radial-gradient(circle at 15% 8%, #fff8 0, transparent 38%), radial-gradient(circle at 88% 95%, #e9dcc340 0, transparent 42%);
+}
+.wrap{max-width:760px;margin:0 auto;padding:26px 18px 80px}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.08;letter-spacing:-.01em}
+a{color:var(--accent)}
+
+/* ---------- Cabecera ---------- */
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.brand .kick{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.brand h1{font-size:2.35rem;margin-top:2px}
+.brand h1 em{font-style:italic;color:var(--accent)}
+.brand .sub{color:var(--ink2);font-size:.95rem;margin-top:4px}
+.savedchip{font-size:.78rem;color:var(--teal);display:flex;align-items:center;gap:6px;background:#fff8;border:1px solid var(--line);padding:6px 11px;border-radius:999px}
+.savedchip .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ---------- Tarjeta base ---------- */
+.card{background:var(--paper2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+.card+.card{margin-top:18px}
+.sectitle{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sectitle::before{content:"";width:18px;height:2px;background:var(--accent);display:inline-block}
+
+/* ---------- Pantalla de inicio ---------- */
+.resume-banner{background:linear-gradient(180deg,#fff,#fdf6e8);border:1px solid var(--gold);border-left:5px solid var(--gold);border-radius:14px;padding:16px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.resume-banner .rt{font-family:'Fraunces',serif;font-size:1.05rem}
+.resume-banner small{color:var(--ink2)}
+
+.modegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{cursor:pointer;border:1.5px solid var(--line);background:#fff8;border-radius:14px;padding:15px 15px;transition:.15s;position:relative}
+.mode:hover{border-color:var(--accent);transform:translateY(-1px)}
+.mode.sel{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px #be4b2b22}
+.mode .mt{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.mode .md{font-size:.86rem;color:var(--ink2);margin-top:5px}
+.mode .ic{font-size:1.15rem}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{cursor:pointer;border:1.5px solid var(--line);background:#fff8;border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:500;color:var(--ink2);transition:.13s;user-select:none}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip .ct{opacity:.6;font-weight:400;font-size:.78rem;margin-left:5px}
+.chip.on .ct{opacity:.75}
+.chip-actions{display:flex;gap:14px;margin-bottom:12px}
+.minilink{background:none;border:none;color:var(--accent);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+.countrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.countbtn{cursor:pointer;border:1.5px solid var(--line);background:#fff8;border-radius:10px;padding:8px 14px;font-weight:600;font-size:.9rem;transition:.13s}
+.countbtn:hover{border-color:var(--accent)}
+.countbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.numfield{display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);border-radius:10px;padding:5px 8px 5px 12px;background:#fff8}
+.numfield input{width:56px;border:none;background:none;font:inherit;font-weight:600;text-align:center;color:var(--ink);font-size:.95rem}
+.numfield input:focus{outline:none}
+.numfield label{font-size:.82rem;color:var(--ink2)}
+
+.toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.92rem;margin-top:4px}
+.switch{width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;transition:.18s;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:.18s}
+.toggle.on .switch{background:var(--ok)}
+.toggle.on .switch::after{left:21px}
+
+.startbar{margin-top:22px}
+.btn{cursor:pointer;border:none;border-radius:12px;font:inherit;font-weight:700;padding:14px 22px;transition:.15s;font-size:1rem}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 20px -8px #be4b2b88;width:100%}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-ghost{background:#fff8;border:1.5px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--accent)}
+.selnote{text-align:center;color:var(--ink2);font-size:.84rem;margin-top:10px}
+
+/* ---------- Pantalla quiz ---------- */
+.qbar{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,var(--paper) 70%,#fbf5ea00);padding:10px 0 14px;margin:-4px 0 4px}
+.qbar .meta{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--ink2);margin-bottom:8px}
+.qbar .meta b{color:var(--ink)}
+.progress{height:9px;background:var(--paper2);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .35s ease}
+.qtopic{display:inline-block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--teal);background:#dfeceb;border-radius:999px;padding:5px 11px;margin-bottom:14px}
+.qnum{font-family:'Fraunces',serif;color:var(--accent);font-weight:600}
+.qtext{font-family:'Fraunces',serif;font-size:1.45rem;line-height:1.28;font-weight:500;margin-bottom:20px}
+
+.opt{display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:13px;padding:14px 16px;margin-bottom:11px;cursor:pointer;font:inherit;color:var(--ink);transition:.13s;position:relative}
+.opt:hover:not(:disabled){border-color:var(--accent);transform:translateX(2px)}
+.opt .key{flex:none;width:27px;height:27px;border-radius:8px;background:var(--paper2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:var(--ink2)}
+.opt .txt{padding-top:2px}
+.opt.picked{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px #be4b2b1f}
+.opt.picked .key{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.correct .key{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .key{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.opt .mark{margin-left:auto;font-weight:700;font-size:1.15rem;align-self:center}
+
+.explain{border-radius:13px;padding:14px 16px;margin-top:6px;font-size:.95rem;border:1px solid;display:none;animation:fade .25s ease}
+.explain.show{display:block}
+.explain.good{background:var(--ok-bg);border-color:#bfe0cb}
+.explain.bad{background:var(--bad-bg);border-color:#eccac4}
+.explain .lbl{font-weight:700;display:block;margin-bottom:3px;font-family:'Fraunces',serif}
+.explain.good .lbl{color:var(--ok)}
+.explain.bad .lbl{color:var(--bad)}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav .btn{flex:1}
+.flagbtn{flex:none !important;width:auto !important;padding:14px 16px}
+.flagbtn.on{background:#fdf3df;border-color:var(--gold);color:var(--accent2)}
+
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;justify-content:center}
+.dot-q{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff8;font:inherit;font-size:.74rem;font-weight:600;color:var(--ink2);cursor:pointer;transition:.1s}
+.dot-q:hover{border-color:var(--accent)}
+.dot-q.cur{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dot-q.ans{background:#e7ddca;color:var(--ink)}
+.dot-q.ans.cur{background:var(--ink);color:#fff}
+.dot-q.flag{box-shadow:0 0 0 2px var(--gold) inset}
+.dot-q.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.dot-q.ko{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+
+/* ---------- Resultados ---------- */
+.scorehead{text-align:center;padding:8px 0 4px}
+.ring{width:168px;height:168px;margin:6px auto 14px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .pc .big{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:600;line-height:1}
+.ring .pc .sm{font-size:.8rem;color:var(--ink2)}
+.verdict{font-family:'Fraunces',serif;font-size:1.5rem;margin-bottom:4px}
+.scoreline{color:var(--ink2)}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.stat{background:#fff8;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat .n{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600}
+.stat.g .n{color:var(--ok)} .stat.b .n{color:var(--bad)}
+.stat .l{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink2);margin-top:2px}
+
+.tbar{margin-bottom:9px}
+.tbar .tl{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:4px}
+.tbar .tl .pct{font-weight:700}
+.tbar .track{height:10px;background:#fff;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.tbar .track span{display:block;height:100%;border-radius:999px}
+
+.review-item{border-top:1px solid var(--line);padding:16px 0}
+.review-item:first-child{border-top:none;padding-top:4px}
+.review-item .rq{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:500;margin-bottom:9px}
+.review-item .rq .rn{color:var(--accent);font-weight:600}
+.ans-line{font-size:.92rem;padding:8px 12px;border-radius:9px;margin-bottom:6px;display:flex;gap:8px}
+.ans-line.your{background:var(--bad-bg)} .ans-line.right{background:var(--ok-bg)}
+.ans-line .lab{font-weight:700;flex:none}
+.ans-line.your .lab{color:var(--bad)} .ans-line.right .lab{color:var(--ok)}
+.review-item .rexp{font-size:.9rem;color:var(--ink2);margin-top:6px;padding-left:2px}
+.review-item .rtopic{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px}
+.filterbtns{display:flex;gap:8px;margin-bottom:6px}
+
+.footer{text-align:center;color:var(--ink2);font-size:.78rem;margin-top:34px;line-height:1.6}
+.headright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pdfbtn{font:inherit;font-size:.82rem;font-weight:700;color:var(--accent);background:#fff8;border:1.5px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s;text-decoration:none;white-space:nowrap}
+.pdfbtn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.pdfhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.pdfhead .sub{color:var(--ink2);font-size:.9rem;margin-top:4px}
+.pdfwrap{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 10px 30px -18px #00000055}
+.pdfframe{width:100%;height:78vh;min-height:460px;border:none;display:block;background:var(--paper2)}
+.pdf-fallback{padding:38px 22px;text-align:center;color:var(--ink2);font-size:.95rem;line-height:1.8}
+.hidden{display:none !important}
+@media(max-width:560px){
+  .brand h1{font-size:1.95rem}
+  .qtext{font-size:1.22rem}
+  .modegrid{grid-template-columns:1fr}
+  .statgrid{grid-template-columns:1fr 1fr}
+  .pdfframe{height:70vh;min-height:360px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="kick">Repaso · 110 preguntas</div>
+      <h1>Test de <em>Psicología</em></h1>
+      <div class="sub">Modo examen o estudio · por temas · con explicaciones</div>
+    </div>
+    <div class="headright">
+      <button class="pdfbtn" id="openPdfBtn">📄 Ver PDF original</button>
+      <div class="savedchip"><span class="dot"></span><span>Progreso guardado en este dispositivo</span></div>
+    </div>
+  </header>
+
+  <!-- ===================== INICIO ===================== -->
+  <section id="setup">
+    <div id="resumeBox" class="resume-banner hidden">
+      <div>
+        <div class="rt">Tienes un test sin terminar</div>
+        <small id="resumeInfo"></small>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" id="discardBtn" style="padding:11px 14px">Descartar</button>
+        <button class="btn btn-primary" id="resumeBtn" style="width:auto;padding:11px 18px">Continuar ▸</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectitle">1 · Modo</div>
+      <div class="modegrid">
+        <div class="mode sel" data-mode="study">
+          <div class="mt"><span class="ic">📖</span> Estudio</div>
+          <div class="md">Corrige al instante y muestra la explicación de cada pregunta. Ideal para aprender.</div>
+        </div>
+        <div class="mode" data-mode="exam">
+          <div class="mt"><span class="ic">📝</span> Examen</div>
+          <div class="md">Respondes todo y la nota llega al final. Como en el examen real.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectitle">2 · Temas</div>
+      <div class="chip-actions">
+        <button class="minilink" id="selAll">Todos</button>
+        <button class="minilink" id="selNone">Ninguno</button>
+      </div>
+      <div class="chips" id="topicChips"></div>
+    </div>
+
+    <div class="card">
+      <div class="sectitle">3 · Cuántas preguntas</div>
+      <div class="countrow">
+        <button class="countbtn" data-count="10">10</button>
+        <button class="countbtn" data-count="20">20</button>
+        <button class="countbtn" data-count="30">30</button>
+        <button class="countbtn on" data-count="all">Todas</button>
+        <div class="numfield">
+          <input id="customCount" type="number" min="1" placeholder="--">
+          <label>concretas</label>
+        </div>
+      </div>
+      <div class="toggle on" id="shuffleTog" style="margin-top:16px">
+        <span class="switch"></span><span>Barajar el orden de las preguntas</span>
+      </div>
+    </div>
+
+    <div class="startbar">
+      <button class="btn btn-primary" id="startBtn">Empezar test ▸</button>
+      <div class="selnote" id="selNote"></div>
+    </div>
+  </section>
+
+  <!-- ===================== PDF ===================== -->
+  <section id="pdf" class="hidden">
+    <div class="pdfhead">
+      <div>
+        <div class="sectitle">PDF original del test</div>
+        <div class="sub">Las 110 preguntas tal cual vienen en el documento.</div>
+      </div>
+      <button class="pdfbtn" id="closePdfBtn">◂ Volver al test</button>
+    </div>
+    <div class="pdfwrap">
+      <object class="pdfframe" data="110_P_de_Psico.pdf#view=FitH" type="application/pdf">
+        <iframe class="pdfframe" src="110_P_de_Psico.pdf" title="110_P_de_Psico.pdf"></iframe>
+        <div class="pdf-fallback">
+          Tu navegador no puede mostrar el PDF aquí dentro.<br>
+          <a href="110_P_de_Psico.pdf" target="_blank" rel="noopener">Abrir el PDF en una pestaña nueva ▸</a><br>
+          <small>Asegúrate de que <b>110_P_de_Psico.pdf</b> está en la misma carpeta que este archivo.</small>
+        </div>
+      </object>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz" class="hidden">
+    <div class="qbar">
+      <div class="meta">
+        <span>Pregunta <b id="qPos">1</b> / <b id="qTotal">10</b></span>
+        <span id="qScoreLive"></span>
+      </div>
+      <div class="progress"><span id="progFill" style="width:0%"></span></div>
+    </div>
+
+    <div class="card">
+      <span class="qtopic" id="qTopic">Tema</span>
+      <div class="qtext"><span class="qnum" id="qNumLabel"></span> <span id="qText"></span></div>
+      <div id="optBox"></div>
+      <div class="explain" id="explainBox"><span class="lbl" id="explainLbl"></span><span id="explainTxt"></span></div>
+      <div class="nav">
+        <button class="btn btn-ghost" id="prevBtn">‹ Anterior</button>
+        <button class="btn btn-ghost flagbtn" id="flagBtn" title="Marcar para revisar">⚑ Marcar</button>
+        <button class="btn btn-primary" id="nextBtn" style="width:auto;flex:2">Siguiente ›</button>
+      </div>
+      <div class="dots" id="dotNav"></div>
+    </div>
+    <div class="startbar"><button class="btn btn-ghost" id="quitBtn" style="width:100%">Salir y guardar</button></div>
+  </section>
+
+  <!-- ===================== RESULTADOS ===================== -->
+  <section id="results" class="hidden">
+    <div class="card">
+      <div class="scorehead">
+        <div class="ring">
+          <svg width="168" height="168" viewBox="0 0 168 168">
+            <circle cx="84" cy="84" r="74" fill="none" stroke="var(--line)" stroke-width="14"/>
+            <circle id="ringFg" cx="84" cy="84" r="74" fill="none" stroke="var(--accent)" stroke-width="14" stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="465"/>
+          </svg>
+          <div class="pc"><span class="big" id="rPct">0%</span><span class="sm">acierto</span></div>
+        </div>
+        <div class="verdict" id="rVerdict"></div>
+        <div class="scoreline" id="rScoreLine"></div>
+      </div>
+      <div class="statgrid">
+        <div class="stat g"><div class="n" id="rOk">0</div><div class="l">Aciertos</div></div>
+        <div class="stat b"><div class="n" id="rKo">0</div><div class="l">Fallos</div></div>
+        <div class="stat"><div class="n" id="rBlank">0</div><div class="l">En blanco</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sectitle">Rendimiento por tema</div>
+      <div id="topicBars"></div>
+    </div>
+
+    <div class="card">
+      <div class="sectitle">Repaso de tus respuestas</div>
+      <div class="filterbtns">
+        <button class="countbtn on" data-rfilter="wrong">Solo fallos</button>
+        <button class="countbtn" data-rfilter="all">Todas</button>
+      </div>
+      <div id="reviewBox"></div>
+    </div>
+
+    <div class="startbar" style="display:flex;gap:10px;flex-direction:column">
+      <button class="btn btn-primary" id="retryWrongBtn">Repetir solo los fallos ▸</button>
+      <button class="btn btn-ghost" id="newTestBtn" style="width:100%">Configurar un test nuevo</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    Material de repaso generado a partir de tu test de 110 preguntas.<br>
+    Las respuestas marcadas son la mejor opción según la psicología básica; si tu temario define algún concepto de otra forma, fíate de tus apuntes.
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [{"n": 1, "tema": "Motivación", "q": "¿Cómo se llama el conflicto que se produce cuando tienes solo una opción y esta tiene aspectos que te gustan y te disgustan?", "opts": ["Evitación - Evitación.", "Múltiple Aproximación - Múltiple Evitación.", "Aproximación - Evitación."], "c": 2, "exp": "Cuando una única meta tiene a la vez algo atractivo y algo desagradable, es un conflicto de aproximación-evitación."}, {"n": 2, "tema": "Pensamiento y Cognición", "q": "¿Cómo se denomina el atajo mental o heurística a partir de la cual formamos juicios sobre la ocurrencia de acontecimientos, basados en la información más accesible en nuestra memoria?", "opts": ["Heurístico de confirmación", "Heurístico de representatividad", "Heurístico de disponibilidad"], "c": 2, "exp": "El heurístico de disponibilidad juzga la probabilidad de algo según lo fácil que es recordar ejemplos."}, {"n": 3, "tema": "Atención", "q": "Tratar de escuchar discretamente la conversación del grupo de al lado (orientamos la atención, pero no resulta observable) es un ejemplo de atención...", "opts": ["Global", "Interna", "Encubierta"], "c": 2, "exp": "La atención encubierta la dirigimos a algo sin moverla mirada ni hacerlo evidente."}, {"n": 4, "tema": "Aprendizaje", "q": "¿Qué autor realizó el experimento del “Muñeco Bobo” para entender el aprendizaje social u observacional?", "opts": ["E. Thorndike", "B.F. Skinner", "A. Bandura"], "c": 2, "exp": "Bandura demostró con el muñeco Bobo que aprendemos imitando lo que observamos en otros."}, {"n": 5, "tema": "Historia y Escuelas", "q": "¿Quién impartió el primer curso de Psicología Experimental y escribió el libro “Principios de la Psicología”?", "opts": ["B.F. Skinner", "W. James", "W. Wundt"], "c": 1, "exp": "William James escribió “Principios de Psicología” e impulsó la enseñanza de la psicología experimental (ojo: el primer laboratorio fue de Wundt)."}, {"n": 6, "tema": "Métodos y Ramas", "q": "Señale la afirmación correcta respecto a la Psicología de la Salud:", "opts": ["Estudia la conducta ante enfermedades físicas raras que requieren ayuda psicológica.", "Aplica la psicología para estudiar conductas de salud y enfermedad mental.", "Aplica la psicología para estudiar conductas de salud y enfermedad física."], "c": 2, "exp": "La Psicología de la Salud aplica la psicología a la salud y la enfermedad física (no a la enfermedad mental)."}, {"n": 7, "tema": "Motivación", "q": "¿Cuál de las siguientes motivaciones es una motivación primaria?", "opts": ["Poder", "Afiliación", "Defensa"], "c": 2, "exp": "Las motivaciones primarias son innatas y biológicas (hambre, sed, defensa); poder y afiliación son aprendidas."}, {"n": 8, "tema": "Atención", "q": "¿Cuál de los siguientes ejemplos sería un tipo de atención interna?", "opts": ["Atender a las sensaciones físicas que aparecen cuando nos duele la cabeza.", "Atender a una persona que habla en un ambiente ruidoso.", "Atender a las señales de tráfico mientras conducimos."], "c": 0, "exp": "La atención interna se dirige a estados propios del cuerpo o la mente, como un dolor de cabeza."}, {"n": 9, "tema": "Motivación", "q": "¿Cuál de los siguientes motivos NO es un motivo primario?", "opts": ["Defensa.", "Poder.", "Hambre."], "c": 1, "exp": "El poder es un motivo secundario (social y aprendido); hambre y defensa son primarios."}, {"n": 10, "tema": "Pensamiento y Cognición", "q": "¿Cómo se denomina la táctica de resolución de problemas en la que la persona siente una comprensión súbita que le hace encontrar de golpe la solución?", "opts": ["Algoritmo.", "Insight.", "Heurística"], "c": 1, "exp": "El insight es la solución repentina que aparece “de golpe”, sin ir probando paso a paso."}, {"n": 11, "tema": "Historia y Escuelas", "q": "El comportamiento humano...", "opts": ["Influye sobre todo la genética, somos bastante simples", "Somos como un puzzle, influyen muchas variables", "Lo más importante es el contexto en el que estamos"], "c": 1, "exp": "La conducta resulta de muchas variables combinadas (biología, aprendizaje, contexto…), no de una sola."}, {"n": 12, "tema": "Historia y Escuelas", "q": "¿Qué escuela consideraba que los elementos individuales no eran importantes y que había que fijarse en el conjunto?", "opts": ["Gestalt", "Funcionalismo", "Estructuralismo"], "c": 0, "exp": "La Gestalt defendía que “el todo es más que la suma de las partes”."}, {"n": 13, "tema": "Desarrollo Evolutivo", "q": "¿Qué razonamiento moral tienes si evalúas lo que está bien/mal teniendo en cuenta solo lo aceptado socialmente?", "opts": ["Preconvencional", "Convencional", "Postconvencional"], "c": 1, "exp": "En el nivel convencional de Kohlberg se juzga según las normas y la aprobación social."}, {"n": 14, "tema": "Emoción", "q": "¿Qué expresión facial de las emociones básicas reconocemos mejor porque puede ser vital para mi supervivencia?", "opts": ["Miedo", "Alegría", "Ira"], "c": 0, "exp": "Reconocer el miedo en otros nos avisa de un posible peligro, por eso lo detectamos muy bien."}, {"n": 15, "tema": "Aprendizaje", "q": "En el Condicionamiento Clásico, la extinción ocurrirá cuando...", "opts": ["El estímulo incondicionado ya no aparezca tras el estímulo condicionado.", "El estímulo condicionado ya no aparezca tras el estímulo incondicionado.", "El estímulo neutro ya no aparezca tras el estímulo incondicionado."], "c": 0, "exp": "La extinción ocurre cuando el estímulo condicionado deja de ir acompañado del incondicionado."}, {"n": 16, "tema": "Historia y Escuelas", "q": "¿Qué escuela psicológica es considerada la “Tercera Fuerza” y centró su análisis en personas sanas?", "opts": ["Psicología Humanista", "Psicología de la Gestalt", "Conductismo"], "c": 0, "exp": "La Psicología Humanista es la “tercera fuerza” y se centró en el crecimiento de personas sanas."}, {"n": 17, "tema": "Comunicación", "q": "El volumen, la fluidez y el tono son elementos de la comunicación...", "opts": ["Verbal.", "Paraverbal.", "No verbal."], "c": 1, "exp": "Lo paraverbal es el “cómo” decimos las palabras: tono, volumen, ritmo y fluidez."}, {"n": 18, "tema": "Sensación y Percepción", "q": "¿Qué es el fenómeno phi?", "opts": ["Una ilusión de movimiento", "Una adaptación sensorial", "Una alucinación"], "c": 0, "exp": "El fenómeno phi es la ilusión de movimiento al ver luces fijas encenderse y apagarse alternativamente."}, {"n": 19, "tema": "Emoción", "q": "Rosa dice que tenía vergüenza: le sudaban las manos, notaba rubor facial, palpitaciones y calor. ¿Qué componente de la emoción destaca?", "opts": ["El componente fisiológico/biológico.", "El componente motor/expresivo.", "El componente cognitivo/subjetivo."], "c": 0, "exp": "Son respuestas corporales, es decir, el componente fisiológico de la emoción."}, {"n": 20, "tema": "Emoción", "q": "¿Qué emociones provocan una mayor activación de la corteza prefrontal izquierda?", "opts": ["Miedo e Ira", "Emociones negativas (asco y depresión)", "Emociones positivas (alegría y optimismo)"], "c": 2, "exp": "La activación prefrontal izquierda se asocia a emociones positivas y de aproximación."}, {"n": 21, "tema": "Pensamiento y Cognición", "q": "En la serie “House”, cuando el protagonista descubre de forma súbita el diagnóstico, ¿qué táctica de resolución aplica?", "opts": ["Ensayo-Error", "Algoritmo", "Insight"], "c": 2, "exp": "Descubrir la solución de repente es resolver mediante insight."}, {"n": 22, "tema": "Desarrollo Evolutivo", "q": "En el tema sobre las etapas del ciclo vital (psicología evolutiva) hemos estudiado el...", "opts": ["Desarrollo físico/motor, psicosocial y cognitivo en las diferentes etapas del ciclo vital.", "Las escuelas de la psicología evolutiva.", "El crecimiento cuantitativo físico, psicosocial y cognitivo en las diferentes etapas."], "c": 0, "exp": "La psicología evolutiva estudia el desarrollo (no solo el crecimiento cuantitativo) en lo físico, psicosocial y cognitivo."}, {"n": 23, "tema": "Comunicación", "q": "¿Cuál se dice que es el peso de la Comunicación Verbal en el proceso comunicativo?", "opts": ["20%", "40%", "80%"], "c": 0, "exp": "La mayor parte del mensaje es no verbal; lo puramente verbal pesa poco (en torno al 20%)."}, {"n": 24, "tema": "Pensamiento y Cognición", "q": "¿Cómo se denomina el atajo mental basado en la información más accesible en la memoria?", "opts": ["Heurístico de disponibilidad", "Heurístico de representatividad", "Heurístico de confirmación"], "c": 0, "exp": "Igual que la pregunta 2: usamos lo que recordamos con facilidad para estimar la probabilidad."}, {"n": 25, "tema": "Motivación", "q": "La Teoría de las Necesidades de Maslow defiende que:", "opts": ["Cubrimos las necesidades en orden: satisfechas las básicas, nos motivan las superiores.", "Buscamos siempre la autorrealización por encima de cualquier otra necesidad básica.", "El objetivo es cumplir las metas que otros nos marcan para autorrealizarnos."], "c": 0, "exp": "Maslow propone subir la pirámide: primero las necesidades básicas y luego las superiores."}, {"n": 26, "tema": "Desarrollo Evolutivo", "q": "¿Quién estudió el desarrollo moral del ser humano?", "opts": ["J. Piaget", "E. Erikson", "L. Kohlberg"], "c": 2, "exp": "Lawrence Kohlberg estudió las etapas del razonamiento moral."}, {"n": 27, "tema": "Métodos y Ramas", "q": "El área de la Psicología que se dedica a elaborar y validar cuestionarios, tests y encuestas se conoce como...", "opts": ["Psicometría", "Psicología Experimental", "Psicología Social"], "c": 0, "exp": "La psicometría se ocupa de construir y validar tests, cuestionarios y medidas."}, {"n": 28, "tema": "Atención", "q": "Los mecanismos “top-down” de la atención son:", "opts": ["Factores del estímulo que dirigen la atención.", "Factores internos de la persona que dirigen la atención.", "Factores del entorno físico que dirigen la atención."], "c": 1, "exp": "La atención top-down la dirigen nuestros objetivos e intereses internos (de arriba hacia abajo)."}, {"n": 29, "tema": "Desarrollo Evolutivo", "q": "¿En qué etapa de la vida vemos el conflicto Integridad vs. Desesperación según E. Erikson?", "opts": ["Adulto medio", "Vejez", "Adolescencia"], "c": 1, "exp": "Es el último conflicto de Erikson, propio de la vejez."}, {"n": 30, "tema": "Emoción", "q": "Las emociones...", "opts": ["A veces son buenas y otras malas", "No hay emociones malas y buenas, todas son adaptativas", "A veces surgen sin ningún motivo"], "c": 1, "exp": "No hay emociones “buenas” o “malas”; todas cumplen una función adaptativa."}, {"n": 31, "tema": "Motivación", "q": "Cuando tenemos miedo a fallar tendemos a escoger tareas...", "opts": ["Muy fáciles o muy difíciles", "Tareas de nivel medio, para no equivocarme", "Que no requieran demasiado esfuerzo"], "c": 0, "exp": "Con miedo al fracaso evitamos los retos medios: o algo seguro y fácil, o tan difícil que fallar “no cuenta”."}, {"n": 32, "tema": "Motivación", "q": "Los motivos primarios (motivación)...", "opts": ["No se ven influidos socialmente", "Son innatos", "Se adquieren"], "c": 1, "exp": "Los motivos primarios son innatos y de base biológica."}, {"n": 33, "tema": "Aprendizaje", "q": "Un reforzador primario sería...", "opts": ["Comida", "Un coche", "Una videoconsola"], "c": 0, "exp": "Un reforzador primario satisface una necesidad biológica directa, como la comida."}, {"n": 34, "tema": "Lenguaje", "q": "Para aprender un lenguaje es fundamental...", "opts": ["El aprendizaje social", "Escuchar muchos idiomas desde pequeños", "Que se refuerce constantemente"], "c": 0, "exp": "El lenguaje se adquiere sobre todo por interacción social e imitación."}, {"n": 35, "tema": "Lenguaje", "q": "Las holofrases aparecen en la etapa...", "opts": ["De balbuceo", "Biverbal", "Monoverbal"], "c": 2, "exp": "Las holofrases (una palabra con valor de frase) aparecen en la etapa monoverbal."}, {"n": 36, "tema": "Memoria", "q": "¿Qué modelo postula que existen varios tipos de memoria que varían en capacidad de almacenamiento y duración?", "opts": ["Modelo de Atkinson y Shiffrin", "Modelo de Craik y Lockhart", "Modelo de Ebbinghaus"], "c": 0, "exp": "El modelo multialmacén de Atkinson y Shiffrin distingue memorias por su capacidad y duración."}, {"n": 37, "tema": "Historia y Escuelas", "q": "¿Qué escuela buscaba comprender la mente descomponiéndola en sus componentes más elementales (imágenes, sensaciones)?", "opts": ["Estructuralismo.", "Funcionalismo.", "Psicología cognitiva."], "c": 0, "exp": "El estructuralismo analizaba la mente descomponiéndola en sensaciones e imágenes elementales."}, {"n": 38, "tema": "Sensación y Percepción", "q": "¿Cómo se llama el fenómeno por el que el cerebro interpreta imágenes estáticas presentadas a gran velocidad (fotogramas) como movimiento continuo?", "opts": ["Movimiento inducido", "Movimiento estroboscópico", "Fenómeno Phi"], "c": 1, "exp": "Ver fotogramas seguidos como movimiento continuo es el movimiento estroboscópico (base del cine)."}, {"n": 39, "tema": "Aprendizaje", "q": "En el aprendizaje observacional, el proceso de observar e imitar un comportamiento se denomina:", "opts": ["Condicionamiento observacional.", "Modelado.", "Moldeamiento."], "c": 1, "exp": "El modelado es observar e imitar la conducta de un modelo."}, {"n": 40, "tema": "Lenguaje", "q": "Las normas para combinar las palabras en frases gramaticalmente correctas se llaman:", "opts": ["Semántica.", "Gramática.", "Sintaxis."], "c": 2, "exp": "La sintaxis son las reglas para ordenar las palabras en frases correctas."}, {"n": 41, "tema": "Historia y Escuelas", "q": "Indica las disciplinas científicas que nutrieron el desarrollo de la psicología como ciencia hace más de 100 años:", "opts": ["Fisiología y Filosofía.", "Fisiología y Sociología.", "Medicina y Fisiología."], "c": 0, "exp": "La psicología nació de la unión de la filosofía (preguntas sobre la mente) y la fisiología (método experimental)."}, {"n": 42, "tema": "Atención", "q": "¿Qué tipo de atención está implicada fundamentalmente en el trabajo de un controlador aéreo?", "opts": ["Atención sostenida", "Atención focalizada", "Atención dividida"], "c": 0, "exp": "Mantener la atención durante mucho tiempo es atención sostenida."}, {"n": 43, "tema": "Historia y Escuelas", "q": "¿De qué depende el comportamiento de una persona?", "opts": ["De la educación", "Del contexto en el que se encuentre", "De diferentes variables"], "c": 2, "exp": "La conducta depende de la interacción de muchas variables, no de una sola."}, {"n": 44, "tema": "Historia y Escuelas", "q": "¿Qué buscaba el psicoanálisis?", "opts": ["Encontrar teorías generalizables", "Analizar casos individuales con conducta “anormal”", "Analizar casos individuales con conducta “normal”"], "c": 1, "exp": "El psicoanálisis nació del estudio de casos individuales con conductas patológicas."}, {"n": 45, "tema": "Métodos y Ramas", "q": "¿Qué disciplina busca adaptar el puesto de trabajo para que el trabajador aumente su productividad?", "opts": ["Psicología del trabajo", "Recursos humanos", "Ergonomía"], "c": 2, "exp": "La ergonomía adapta el puesto y las herramientas a la persona para mejorar bienestar y rendimiento."}, {"n": 46, "tema": "Desarrollo Evolutivo", "q": "¿Qué principio o principios rigen el crecimiento?", "opts": ["Céfalo-caudal", "Próximo-distal", "Ambos"], "c": 2, "exp": "El crecimiento sigue dos principios a la vez: céfalo-caudal y próximo-distal."}, {"n": 47, "tema": "Desarrollo Evolutivo", "q": "Durante la niñez se desarrolla el pensamiento simbólico, que hace referencia a…", "opts": ["Pensar en conceptos abstractos, como el amor o la justicia", "Imaginar seres que no existen, como brujas o monstruos", "Ponerse en el lugar de otra persona"], "c": 1, "exp": "El pensamiento simbólico permite representar e imaginar cosas ausentes (monstruos, juego de “hacer como si”). Lo abstracto llega después, en la adolescencia."}, {"n": 48, "tema": "Comunicación", "q": "Si para hacer una crítica digo primero algo positivo, luego la crítica y de nuevo algo positivo, uso la técnica de…", "opts": ["Disco rayado", "Banco de niebla", "Bocadillo"], "c": 2, "exp": "La técnica del bocadillo “envuelve” la crítica entre dos comentarios positivos."}, {"n": 49, "tema": "Emoción", "q": "Para regularnos emocionalmente…", "opts": ["Es bueno procesar todas las emociones, no solo las intensas", "No es necesario tener conocimiento sobre las emociones", "Es bueno juzgar las emociones como buenas o malas"], "c": 0, "exp": "Conviene atender a todas las emociones, no solo a las muy intensas."}, {"n": 50, "tema": "Motivación", "q": "En la pirámide de Maslow…", "opts": ["Se puede subir al siguiente nivel sin completar en el que estás", "Para subir al nivel de arriba debes completar el de abajo", "No es necesario seguir un orden exacto"], "c": 1, "exp": "Hay que cubrir el nivel inferior antes de pasar al siguiente."}, {"n": 51, "tema": "Motivación", "q": "Para aumentar nuestra motivación…", "opts": ["Es bueno tener objetivos tanto a largo como a corto plazo", "No es bueno tener un pensamiento muy realista", "Es mejor compensarnos solo al conseguir grandes objetivos"], "c": 0, "exp": "Combinar metas a corto y a largo plazo mantiene la motivación."}, {"n": 52, "tema": "Motivación", "q": "La conducta motivada…", "opts": ["No requiere esfuerzo", "Persigue un objetivo", "Suele producirse solo una vez"], "c": 1, "exp": "Toda conducta motivada se dirige a una meta."}, {"n": 53, "tema": "Lenguaje", "q": "Cuando comienza la etapa de balbuceo…", "opts": ["Balbucean basándose en los sonidos que escuchan a sus padres", "Son capaces de emitir muchos sonidos, también ajenos a su lengua nativa", "Comienza aproximadamente a los 6 meses"], "c": 1, "exp": "Al empezar a balbucear, el bebé produce sonidos de muchas lenguas, no solo de la suya (luego se va ajustando a su idioma)."}, {"n": 54, "tema": "Lenguaje", "q": "Las holofrases son…", "opts": ["Una palabra con significado más complejo", "Varias palabras en una frase, pero sin verbos", "Una frase que todavía no es correcta gramaticalmente"], "c": 0, "exp": "Una holofrase es una sola palabra que expresa el significado de una frase entera."}, {"n": 55, "tema": "Pensamiento y Cognición", "q": "¿Qué error en la toma de decisiones consiste en defender una respuesta sin tener certeza?", "opts": ["Exceso de confianza", "Encuadre", "Creencias sesgadas"], "c": 0, "exp": "El exceso de confianza es creernos más seguros de lo que la información justifica."}, {"n": 56, "tema": "Pensamiento y Cognición", "q": "¿Qué tipo de fijación nos impide encontrar nuevos puntos de vista al resolver problemas?", "opts": ["Fijación mental", "Fijación funcional", "Fijación emocional"], "c": 0, "exp": "La fijación mental (mental set) es repetir un enfoque conocido que nos impide ver soluciones nuevas."}, {"n": 57, "tema": "Aprendizaje", "q": "Si tras una conducta la consecuencia es una pizza (me encanta y tengo hambre), es un refuerzo…", "opts": ["Positivo y primario", "Positivo y secundario", "Negativo y primario"], "c": 0, "exp": "Se añade algo agradable (positivo) que cubre una necesidad biológica (primario)."}, {"n": 58, "tema": "Aprendizaje", "q": "Si le doy una chuche a mi perro tras sentarse, unas veces sí y otras no, es refuerzo…", "opts": ["Continuo", "Intermitente", "Predictivo"], "c": 1, "exp": "Reforzar solo algunas veces es refuerzo intermitente."}, {"n": 59, "tema": "Aprendizaje", "q": "Si cada 10 pizzas me regalan una, ¿qué tipo de refuerzo se utiliza?", "opts": ["De intervalo fijo", "De intervalo variable", "De razón fija"], "c": 2, "exp": "Reforzar tras un número fijo de respuestas (cada 10) es un programa de razón fija."}, {"n": 60, "tema": "Aprendizaje", "q": "Cuando asociamos dos estímulos es aprendizaje…", "opts": ["Operante", "Observacional", "Clásico"], "c": 2, "exp": "El condicionamiento clásico asocia dos estímulos entre sí."}, {"n": 61, "tema": "Aprendizaje", "q": "En el experimento del perro de Pavlov, el estímulo neutro sería…", "opts": ["El sonido antes de realizar el condicionamiento", "El sonido después de realizar el condicionamiento", "La comida"], "c": 0, "exp": "Antes de aprender, el sonido no provoca salivación: es el estímulo neutro."}, {"n": 62, "tema": "Memoria", "q": "La ley de Ribot nos dice que…", "opts": ["Lo último que memorizamos es lo último que olvidamos", "Lo primero que memorizamos es lo último que olvidamos", "No existe una ley sobre el orden de olvido"], "c": 1, "exp": "Según Ribot, los recuerdos más antiguos son los más resistentes al olvido."}, {"n": 63, "tema": "Memoria", "q": "¿Qué tipo de estrés es capaz de sellar los recuerdos en la memoria?", "opts": ["Estrés moderado", "Estrés bajo", "Estrés prolongado en el tiempo"], "c": 0, "exp": "Un estrés moderado mejora la consolidación y “fija” mejor los recuerdos."}, {"n": 64, "tema": "Memoria", "q": "Que recordemos mejor la información presentada al final se denomina…", "opts": ["Efecto de primacía", "Efecto del espaciado", "Efecto de recencia"], "c": 2, "exp": "El efecto de recencia es recordar mejor lo último presentado (primacía = lo primero)."}, {"n": 65, "tema": "Atención", "q": "Los cambios en el estado de alerta que dependen del momento del día son…", "opts": ["Tónicos", "Fásicos", "Intensos"], "c": 0, "exp": "Los cambios tónicos de alerta son lentos y dependen del ciclo del día (ritmo circadiano)."}, {"n": 66, "tema": "Sensación y Percepción", "q": "La tendencia a llenar los espacios en blanco para crear un objeto completo es…", "opts": ["Principio de proximidad", "Principio de continuidad", "Principio de cierre"], "c": 2, "exp": "El principio de cierre nos hace “completar” figuras incompletas."}, {"n": 67, "tema": "Sensación y Percepción", "q": "De estas teorías sobre la percepción del color, ¿alguna es válida?", "opts": ["Teoría tricromática de Young-Helmholtz", "Teoría del proceso opuesto de Hering", "Ambas"], "c": 2, "exp": "La tricromática (conos) y la del proceso oponente explican fases distintas: ambas son válidas y complementarias."}, {"n": 68, "tema": "Sensación y Percepción", "q": "La ley de Weber nos dice que para detectar cambios en un estímulo…", "opts": ["Lo importante es la cantidad de cambio", "Depende del caso importará una cosa u otra", "Lo importante es el porcentaje de cambio"], "c": 2, "exp": "Según Weber, lo que importa para notar un cambio es la proporción, no la cantidad absoluta."}, {"n": 69, "tema": "Memoria", "q": "¿Qué sucede con el estrés repentino y agudo?", "opts": ["Corroe las conexiones neuronales y puede haber lagunas de memoria", "Bloquea el acceso a recuerdos anteriores", "Hace que las conexiones neuronales se hagan más fuertes"], "c": 0, "exp": "A diferencia del estrés moderado, un estrés muy intenso daña las conexiones y puede provocar fallos de memoria."}, {"n": 70, "tema": "Aprendizaje", "q": "Cuando dejamos de oír el minutero del reloj es un aprendizaje...", "opts": ["No asociativo", "Asociativo", "Observacional"], "c": 0, "exp": "Acostumbrarse a un estímulo constante (habituación) es aprendizaje no asociativo."}, {"n": 71, "tema": "Bases Biológicas", "q": "¿En qué lóbulo cerebral se encuentra el área relacionada con la visión?", "opts": ["Frontal", "Occipital", "Temporal"], "c": 1, "exp": "La corteza visual está en el lóbulo occipital (parte posterior del cerebro)."}, {"n": 72, "tema": "Aprendizaje", "q": "El experimento del pequeño Albert es un ejemplo clásico de...", "opts": ["Condicionamiento instrumental", "Condicionamiento observacional", "Condicionamiento clásico"], "c": 2, "exp": "A Albert se le condicionó el miedo asociando estímulos: condicionamiento clásico."}, {"n": 73, "tema": "Desarrollo Evolutivo", "q": "¿En qué etapa de Piaget se desarrolla el principio de conservación?", "opts": ["Preoperacional", "Operaciones Concretas", "Operaciones formales"], "c": 1, "exp": "La conservación (la cantidad no cambia aunque cambie la forma) se logra en operaciones concretas."}, {"n": 74, "tema": "Motivación", "q": "La jerarquía de necesidades de Maslow, ¿qué tipo de teoría motivacional sería?", "opts": ["Cognitivas", "Del comportamiento", "Biológicas"], "c": 0, "exp": "Maslow se clasifica entre las teorías cognitivo-humanistas, centradas en metas y crecimiento personal."}, {"n": 75, "tema": "Métodos y Ramas", "q": "¿Cuál de estas áreas NO está reconocida actualmente por el Consejo General de Colegios Oficiales de Psicólogos?", "opts": ["Psicología aeronáutica", "Psicología comparada", "Psicología del tráfico y de la seguridad"], "c": 1, "exp": "La psicología comparada es un campo de investigación básica, no un área profesional reconocida como tal."}, {"n": 76, "tema": "Métodos y Ramas", "q": "Si paso un formulario a gente y les pido que se lo pasen a más gente, ¿qué muestreo no probabilístico uso?", "opts": ["Bola de nieve", "Casual o incidental", "Por cuotas"], "c": 0, "exp": "En el muestreo bola de nieve, unos participantes reclutan a otros."}, {"n": 77, "tema": "Psicología Forense", "q": "¿En qué parte de la entrevista a testigos se realizan preguntas abiertas y sencillas?", "opts": ["Parte Abierta", "Parte Interrogativa", "Parte Narrativa"], "c": 2, "exp": "En la fase narrativa se deja relatar libremente con preguntas abiertas; las preguntas concretas vienen después."}, {"n": 78, "tema": "Métodos y Ramas", "q": "El muestreo aleatorio estratificado se caracteriza por:", "opts": ["Seleccionar una muestra de todos los individuos", "Dividir la población en estratos y seleccionar al azar una muestra de cada uno", "Elegir individuos a los que se tiene fácil acceso"], "c": 1, "exp": "Se divide la población en estratos y se elige al azar dentro de cada estrato."}, {"n": 79, "tema": "Historia y Escuelas", "q": "El empirismo, según Francis Bacon, sostiene que el conocimiento procede de...", "opts": ["La razón", "La fe", "La experiencia"], "c": 2, "exp": "El empirismo sostiene que el conocimiento procede de la experiencia."}, {"n": 80, "tema": "Atención", "q": "Según los mecanismos implicados en la atención, ¿qué tipos habría?", "opts": ["Selectiva, Dividida y Sostenida", "Consciente e Inconsciente", "Voluntaria e Involuntaria"], "c": 0, "exp": "Según el mecanismo implicado se habla de atención selectiva, dividida y sostenida."}, {"n": 81, "tema": "Pensamiento y Cognición", "q": "La imagen mental que mejor representa las características del objeto al que nos referimos es...", "opts": ["Un concepto", "Un prototipo", "Una categoría"], "c": 1, "exp": "El prototipo es el mejor ejemplo o modelo “típico” de una categoría."}, {"n": 82, "tema": "Emoción", "q": "Ante la emoción básica de alegría, ¿qué ocurre con la frecuencia cardiaca?", "opts": ["Disminuye", "Estable", "Aumenta"], "c": 2, "exp": "La alegría activa el organismo y eleva la frecuencia cardiaca."}, {"n": 83, "tema": "Desarrollo Evolutivo", "q": "¿Qué principio del desarrollo indica que primero se controla el tronco y luego las extremidades?", "opts": ["Próximo-Distal", "Céfalo-Caudal", "Flexores-Extensores"], "c": 0, "exp": "El desarrollo va del centro (tronco) hacia afuera (extremidades): principio próximo-distal."}, {"n": 84, "tema": "Bases Biológicas", "q": "¿Cómo se llama el conjunto de estructuras que sirven de entrada de información hacia la corteza cerebral?", "opts": ["Tálamo", "Hipotálamo", "Tronco encefálico"], "c": 0, "exp": "El tálamo es la “estación” que filtra y envía la información sensorial a la corteza."}, {"n": 85, "tema": "Historia y Escuelas", "q": "El conductismo, como enfoque psicológico, fue fundado por:", "opts": ["Max Wertheimer", "Sigmund Freud", "John B. Watson"], "c": 2, "exp": "John B. Watson fundó el conductismo."}, {"n": 86, "tema": "Métodos y Ramas", "q": "Según Wengraf (2001), ¿qué tipo de entrevista harías para recoger datos exhaustivos de forma fidedigna?", "opts": ["Semiestructurada", "Estructurada", "No estructurada"], "c": 1, "exp": "La entrevista estructurada, con preguntas fijas, recoge datos completos y comparables de forma fiable."}, {"n": 87, "tema": "Memoria", "q": "Un examen tipo test como este, ¿cómo evalúa la memoria?", "opts": ["Reaprendizaje", "Recuerdo", "Reconocimiento"], "c": 2, "exp": "Elegir entre opciones dadas evalúa el reconocimiento (no el recuerdo libre)."}, {"n": 88, "tema": "Motivación", "q": "Los motivos humanos se dividen en:", "opts": ["Primarios (innatos) y secundarios (aprendidos).", "Fisiológicos y psicológicos.", "Internos y externos."], "c": 0, "exp": "Primarios = innatos/biológicos; secundarios = aprendidos/sociales."}, {"n": 89, "tema": "Pensamiento y Cognición", "q": "El conocimiento se define como:", "opts": ["Una colección de datos almacenados en la memoria.", "Un estado de comprensión que existe únicamente en la mente del individuo.", "La capacidad de resolver problemas sin procesamiento mental."], "c": 1, "exp": "El conocimiento es un estado de comprensión interno del individuo."}, {"n": 90, "tema": "Pensamiento y Cognición", "q": "El pensamiento es una actividad mental asociada con:", "opts": ["La percepción y la emoción.", "El procesamiento, comprensión, capacidad de recordar y comunicar información.", "Las respuestas automáticas a estímulos externos."], "c": 1, "exp": "Pensar implica manejar información: procesarla, comprenderla, recordarla y comunicarla."}, {"n": 91, "tema": "Aprendizaje", "q": "Si a un niño que se ha portado mal le quitamos el tiempo con la tablet, ¿qué procedimiento aplicamos?", "opts": ["Castigo Negativo", "Refuerzo Negativo", "Castigo Positivo"], "c": 0, "exp": "Se retira algo agradable para reducir la conducta: castigo negativo."}, {"n": 92, "tema": "Historia y Escuelas", "q": "¿Quién creó el primer laboratorio de Psicología Experimental en Leipzig (Alemania) en 1879?", "opts": ["W. James", "W. Wundt", "E. B. Titchener"], "c": 1, "exp": "Wilhelm Wundt creó el primer laboratorio de psicología experimental en Leipzig (1879)."}, {"n": 93, "tema": "Bases Biológicas", "q": "Señala la opción verdadera...", "opts": ["En nuestro cerebro hay más células neurogliales que neuronas", "El axón de la neurona se encarga de recibir las conexiones", "En nuestro cerebro hay más neuronas que células neurogliales"], "c": 0, "exp": "En el cerebro hay más células gliales que neuronas (las dendritas, no el axón, reciben la información)."}, {"n": 94, "tema": "Emoción", "q": "Las competencias intrapersonales de la inteligencia emocional incluyen:", "opts": ["Empatía y manejo de relaciones sociales.", "Autoconciencia y autocontrol.", "Resolución de problemas y toma de decisiones."], "c": 1, "exp": "Lo intrapersonal mira hacia uno mismo: conocerse y regularse. La empatía y las relaciones son interpersonales."}, {"n": 95, "tema": "Emoción", "q": "Hans Selye es conocido por:", "opts": ["Introducir el concepto de homeostasis.", "Popularizar el término “estrés” en relación con la salud.", "Establecer la teoría de la evaluación cognitiva de las emociones."], "c": 1, "exp": "Selye popularizó el concepto de estrés y el síndrome general de adaptación."}, {"n": 96, "tema": "Bases Biológicas", "q": "¿Qué sistema nervioso es el encargado de la respuesta de lucha o huida?", "opts": ["Sistema nervioso parasimpático", "Sistema nervioso central", "Sistema nervioso simpático"], "c": 2, "exp": "El sistema nervioso simpático activa la respuesta de lucha o huida (el parasimpático relaja)."}, {"n": 97, "tema": "Bases Biológicas", "q": "La dificultad para leer tras un daño cerebral, cuando la persona antes sabía leer, se conoce como...", "opts": ["Agrafia", "Alexia", "Agnosia"], "c": 1, "exp": "La alexia es perder la capacidad de leer ya adquirida tras una lesión (agrafia = escribir)."}, {"n": 98, "tema": "Memoria", "q": "Según el modelo de Atkinson y Shiffrin, ¿qué tipos de memoria habría?", "opts": ["Icónica, Ecoica, Operativa y de trabajo", "Sensorial, a Corto Plazo y a Largo Plazo", "Episódica y Semántica"], "c": 1, "exp": "Distingue memoria sensorial, a corto plazo y a largo plazo."}, {"n": 99, "tema": "Sensación y Percepción", "q": "¿Cuál de estos factores NO determina qué parte del estímulo percibimos como figura o como fondo?", "opts": ["Convexidad", "Luminosidad", "Simetría"], "c": 1, "exp": "Convexidad y simetría ayudan a separar figura y fondo; la luminosidad no es un criterio de ese principio."}, {"n": 100, "tema": "Aprendizaje", "q": "¿Qué término acuñó Skinner para la unidad más pequeña de conducta evaluable?", "opts": ["Estímulo condicionado", "Reflejo condicionado", "Operante"], "c": 2, "exp": "Skinner llamó “operante” a la unidad mínima de conducta que opera sobre el ambiente."}, {"n": 101, "tema": "Aprendizaje", "q": "¿Cuál es el propósito de un estímulo discriminativo?", "opts": ["Proporcionar una recompensa automáticamente.", "Informar sobre la posibilidad de obtener una consecuencia si se responde ante su presencia.", "Reducir la probabilidad de que se emita una respuesta."], "c": 1, "exp": "El estímulo discriminativo señala que, si respondes ahí, puede haber una consecuencia."}, {"n": 102, "tema": "Aprendizaje", "q": "¿Qué fenómeno describe la emisión de una respuesta tras la extinción y un periodo de tiempo?", "opts": ["Generalización", "Recuperación espontánea", "Discriminación"], "c": 1, "exp": "La recuperación espontánea es que una respuesta extinguida reaparezca tras un descanso."}, {"n": 103, "tema": "Aprendizaje", "q": "¿Qué variable influye en la eficacia del castigo?", "opts": ["Aplicarlo intermitentemente para mantener la sorpresa.", "Aumentar gradualmente la intensidad del estímulo aversivo.", "Debe ser contingente e inmediato a la respuesta que se desea eliminar."], "c": 2, "exp": "El castigo es eficaz si llega justo después de la conducta que se quiere eliminar."}, {"n": 104, "tema": "Sensación y Percepción", "q": "¿Qué porcentaje de información recoge el sentido de la vista?", "opts": ["50%", "70%", "80%"], "c": 2, "exp": "La vista aporta en torno al 80% de la información que recibimos."}, {"n": 105, "tema": "Sensación y Percepción", "q": "¿Dónde se encuentra la fóvea, el punto de máxima agudeza visual?", "opts": ["En el nervio óptico", "En la retina", "En el cristalino"], "c": 1, "exp": "La fóvea, zona de máxima agudeza visual, está en la retina."}, {"n": 106, "tema": "Sensación y Percepción", "q": "¿Qué parte del oído transforma las ondas sonoras en actividad neuronal?", "opts": ["El oído externo", "El oído medio", "El oído interno"], "c": 2, "exp": "En el oído interno (la cóclea) las ondas se convierten en señales nerviosas."}, {"n": 107, "tema": "Sensación y Percepción", "q": "¿Qué receptor está involucrado en el sentido del olfato?", "opts": ["Bastones gustativos", "Conos y bastones", "Bulbo olfatorio"], "c": 2, "exp": "De las opciones, el bulbo olfatorio es la estructura del olfato (conos y bastones son de la vista)."}, {"n": 108, "tema": "Sensación y Percepción", "q": "¿Qué teoría sobre el olfato incluye categorías como éter, floral y menta?", "opts": ["Teoría estereoquímica", "Teoría del proceso opuesto", "Teoría cromatográfica"], "c": 0, "exp": "La teoría estereoquímica propone olores primarios (etéreo, floral, mentolado…) según la forma de las moléculas."}, {"n": 109, "tema": "Psicología Forense", "q": "¿Qué se debe evitar en el lenguaje durante la toma de declaraciones de testigos?", "opts": ["Frases negativas.", "Descripciones detalladas.", "Preguntas subjetivas."], "c": 0, "exp": "Las frases negativas confunden; conviene un lenguaje claro y formulado en positivo."}, {"n": 110, "tema": "Psicología Forense", "q": "¿Quiénes son más susceptibles a las distorsiones y falsos recuerdos?", "opts": ["Adultos mayores.", "Niños.", "Personas con alto coeficiente intelectual."], "c": 1, "exp": "Los niños son más sugestionables y propensos a distorsiones y falsos recuerdos."}];
+const TEMAS = ["Motivación", "Pensamiento y Cognición", "Atención", "Aprendizaje", "Historia y Escuelas", "Métodos y Ramas", "Desarrollo Evolutivo", "Emoción", "Comunicación", "Sensación y Percepción", "Lenguaje", "Memoria", "Bases Biológicas", "Psicología Forense"];
+const KEYS = ["a","b","c"];
+const LS_SESSION = "psico_test_session_v2";
+const LS_CONFIG  = "psico_test_config_v2";
+
+/* almacenamiento seguro (si localStorage falla, usamos memoria) */
+const mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(k); return v??(k in mem?mem[k]:null);}catch(e){ return (k in mem)?mem[k]:null; } },
+  set(k,v){ try{ localStorage.setItem(k,v);}catch(e){ mem[k]=v; } },
+  del(k){ try{ localStorage.removeItem(k);}catch(e){} delete mem[k]; }
+};
+
+const $ = s=>document.querySelector(s);
+const $$ = s=>Array.from(document.querySelectorAll(s));
+
+/* ---------- estado de configuracion ---------- */
+let cfg = { mode:"study", topics:[...TEMAS], count:"all", shuffle:true };
+
+/* ---------- estado de sesion activa ---------- */
+let S = null; // {mode, order:[idx...], answers:{idx:optIdx}, flags:{idx:true}, pos}
+
+/* ====== INICIO: render temas ====== */
+function topicCount(t){ return QUESTIONS.filter(q=>q.tema===t).length; }
+function renderChips(){
+  const box=$("#topicChips"); box.innerHTML="";
+  TEMAS.forEach(t=>{
+    const el=document.createElement("div");
+    el.className="chip"+(cfg.topics.includes(t)?" on":"");
+    el.innerHTML=`${t}<span class="ct">${topicCount(t)}</span>`;
+    el.onclick=()=>{
+      if(cfg.topics.includes(t)) cfg.topics=cfg.topics.filter(x=>x!==t);
+      else cfg.topics.push(t);
+      renderChips(); updateNote(); saveConfig();
+    };
+    box.appendChild(el);
+  });
+}
+function poolSize(){ return QUESTIONS.filter(q=>cfg.topics.includes(q.tema)).length; }
+function effectiveCount(){
+  const pool=poolSize();
+  if(cfg.count==="all") return pool;
+  const c=parseInt(cfg.count); return isNaN(c)?pool:Math.min(c,pool);
+}
+function updateNote(){
+  const pool=poolSize();
+  const eff=effectiveCount();
+  $("#selNote").textContent = pool===0 ? "Selecciona al menos un tema." :
+     `Se prepararán ${eff} pregunta${eff!==1?"s":""} de un total de ${pool} disponibles en los temas elegidos.`;
+  $("#startBtn").disabled = pool===0;
+}
+
+/* modo */
+$$(".mode").forEach(m=>m.onclick=()=>{
+  $$(".mode").forEach(x=>x.classList.remove("sel"));
+  m.classList.add("sel"); cfg.mode=m.dataset.mode; saveConfig();
+});
+$("#selAll").onclick=()=>{cfg.topics=[...TEMAS];renderChips();updateNote();saveConfig();};
+$("#selNone").onclick=()=>{cfg.topics=[];renderChips();updateNote();saveConfig();};
+
+/* count buttons */
+$$("[data-count]").forEach(b=>b.onclick=()=>{
+  $$("[data-count]").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); cfg.count=b.dataset.count; $("#customCount").value=""; updateNote(); saveConfig();
+});
+$("#customCount").oninput=e=>{
+  const v=e.target.value;
+  if(v){ $$("[data-count]").forEach(x=>x.classList.remove("on")); cfg.count=v; }
+  else { cfg.count="all"; $('[data-count="all"]').classList.add("on"); }
+  updateNote(); saveConfig();
+};
+$("#shuffleTog").onclick=function(){ this.classList.toggle("on"); cfg.shuffle=this.classList.contains("on"); saveConfig(); };
+
+function saveConfig(){ store.set(LS_CONFIG, JSON.stringify(cfg)); }
+function loadConfig(){
+  const raw=store.get(LS_CONFIG); if(!raw) return;
+  try{ const c=JSON.parse(raw);
+    cfg.mode=c.mode||"study"; cfg.topics=Array.isArray(c.topics)&&c.topics.length?c.topics.filter(t=>TEMAS.includes(t)):[...TEMAS];
+    cfg.count=c.count||"all"; cfg.shuffle=c.shuffle!==false;
+  }catch(e){}
+  // reflejar en UI
+  $$(".mode").forEach(m=>m.classList.toggle("sel",m.dataset.mode===cfg.mode));
+  $("#shuffleTog").classList.toggle("on",cfg.shuffle);
+  $$("[data-count]").forEach(x=>x.classList.remove("on"));
+  if(["10","20","30","all"].includes(cfg.count)) $(`[data-count="${cfg.count}"]`).classList.add("on");
+  else { $("#customCount").value=cfg.count; }
+}
+
+/* ====== arranque del test ====== */
+function shuffleArr(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function buildOrder(){
+  let idxs=QUESTIONS.map((q,i)=>i).filter(i=>cfg.topics.includes(QUESTIONS[i].tema));
+  if(cfg.shuffle) shuffleArr(idxs);
+  else idxs.sort((a,b)=>QUESTIONS[a].n-QUESTIONS[b].n);
+  const eff=effectiveCount();
+  return idxs.slice(0,eff);
+}
+$("#startBtn").onclick=()=>{
+  const order=buildOrder(); if(!order.length) return;
+  S={mode:cfg.mode, order, answers:{}, flags:{}, pos:0, finished:false};
+  saveSession(); showScreen("quiz"); renderQuestion();
+};
+
+/* ====== sesion: guardar / cargar ====== */
+function saveSession(){ if(S) store.set(LS_SESSION, JSON.stringify(S)); }
+function loadSession(){ const raw=store.get(LS_SESSION); if(!raw) return null; try{return JSON.parse(raw);}catch(e){return null;} }
+
+/* ====== render pregunta ====== */
+function curIdx(){ return S.order[S.pos]; }
+function isStudy(){ return S.mode==="study"; }
+
+function renderQuestion(){
+  const idx=curIdx(); const q=QUESTIONS[idx];
+  const answered = idx in S.answers;
+  $("#qPos").textContent=S.pos+1;
+  $("#qTotal").textContent=S.order.length;
+  $("#progFill").style.width = ((S.pos)/(S.order.length))*100 + "%";
+  $("#qTopic").textContent=q.tema;
+  $("#qNumLabel").textContent="#"+q.n;
+  $("#qText").textContent=q.q;
+
+  // marcador de revision
+  $("#flagBtn").classList.toggle("on", !!S.flags[idx]);
+
+  // opciones
+  const box=$("#optBox"); box.innerHTML="";
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.type="button";
+    b.innerHTML=`<span class="key">${KEYS[i]}</span><span class="txt">${opt}</span><span class="mark"></span>`;
+    const picked = S.answers[idx]===i;
+    if(picked) b.classList.add("picked");
+    if(isStudy() && answered){
+      b.disabled=true;
+      if(i===q.c){ b.classList.add("correct"); b.querySelector(".mark").textContent="✓"; }
+      else if(picked){ b.classList.add("wrong"); b.querySelector(".mark").textContent="✗"; }
+    }
+    b.onclick=()=>pick(i);
+    box.appendChild(b);
+  });
+
+  // explicacion (solo modo estudio, ya respondida)
+  const ex=$("#explainBox");
+  if(isStudy() && answered){
+    const correct=S.answers[idx]===q.c;
+    ex.className="explain show "+(correct?"good":"bad");
+    $("#explainLbl").textContent = correct ? "¡Correcto!" : "Respuesta correcta: "+KEYS[q.c]+")";
+    $("#explainTxt").textContent = q.exp;
+  } else { ex.className="explain"; }
+
+  // marcador en vivo (modo estudio)
+  liveScore();
+
+  // boton siguiente / finalizar
+  $("#nextBtn").textContent = (S.pos===S.order.length-1) ? "Finalizar y ver nota ✓" : "Siguiente ›";
+  $("#prevBtn").disabled = S.pos===0;
+
+  renderDots();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function liveScore(){
+  if(!isStudy()){ $("#qScoreLive").textContent=""; return; }
+  let ok=0,done=0;
+  S.order.forEach(idx=>{ if(idx in S.answers){done++; if(S.answers[idx]===QUESTIONS[idx].c) ok++;} });
+  $("#qScoreLive").innerHTML = done? `Aciertos: <b>${ok}/${done}</b>` : "";
+}
+
+function pick(i){
+  const idx=curIdx();
+  if(isStudy() && (idx in S.answers)) return; // no cambiar tras corregir
+  S.answers[idx]=i; saveSession();
+  if(isStudy()){ renderQuestion(); }
+  else { // examen: solo marcar, avanzar suave
+    $$("#optBox .opt").forEach((b,k)=>b.classList.toggle("picked",k===i));
+    renderDots();
+  }
+}
+
+$("#nextBtn").onclick=()=>{
+  if(S.pos===S.order.length-1){ finish(); return; }
+  S.pos++; saveSession(); renderQuestion();
+};
+$("#prevBtn").onclick=()=>{ if(S.pos>0){S.pos--;saveSession();renderQuestion();} };
+$("#flagBtn").onclick=()=>{ const idx=curIdx(); S.flags[idx]=!S.flags[idx]; if(!S.flags[idx])delete S.flags[idx]; saveSession(); $("#flagBtn").classList.toggle("on",!!S.flags[idx]); renderDots(); };
+$("#quitBtn").onclick=()=>{ saveSession(); showScreen("setup"); refreshResume(); };
+
+function renderDots(){
+  const nav=$("#dotNav"); nav.innerHTML="";
+  S.order.forEach((idx,p)=>{
+    const d=document.createElement("button"); d.className="dot-q"; d.textContent=p+1;
+    if(p===S.pos) d.classList.add("cur");
+    if(idx in S.answers){
+      d.classList.add("ans");
+      if(isStudy()){ d.classList.add(S.answers[idx]===QUESTIONS[idx].c?"ok":"ko"); }
+    }
+    if(S.flags[idx]) d.classList.add("flag");
+    d.onclick=()=>{ S.pos=p; saveSession(); renderQuestion(); };
+    nav.appendChild(d);
+  });
+}
+
+/* ====== resultados ====== */
+function finish(){
+  S.finished=true; saveSession();
+  let ok=0,ko=0,blank=0;
+  const perTopic={};
+  S.order.forEach(idx=>{
+    const q=QUESTIONS[idx];
+    perTopic[q.tema]=perTopic[q.tema]||{ok:0,tot:0};
+    perTopic[q.tema].tot++;
+    if(!(idx in S.answers)){ blank++; }
+    else if(S.answers[idx]===q.c){ ok++; perTopic[q.tema].ok++; }
+    else ko++;
+  });
+  const total=S.order.length;
+  const pct=Math.round(ok/total*100);
+  $("#rOk").textContent=ok; $("#rKo").textContent=ko; $("#rBlank").textContent=blank;
+  $("#rPct").textContent=pct+"%";
+  $("#rScoreLine").textContent=`${ok} de ${total} preguntas correctas`;
+  // anillo
+  const off=465-(465*pct/100);
+  const ring=$("#ringFg");
+  ring.style.stroke = pct>=70?"var(--ok)":pct>=50?"var(--gold)":"var(--bad)";
+  setTimeout(()=>ring.style.strokeDashoffset=off,80);
+  // veredicto
+  const v = pct>=90?"¡Dominas el tema! 🎓":pct>=70?"Muy bien, vas sobrado 👏":pct>=50?"Aprobado justo, sigue repasando 📚":"A repasar con calma, tú puedes 💪";
+  $("#rVerdict").textContent=v;
+  // barras por tema
+  const tb=$("#topicBars"); tb.innerHTML="";
+  Object.keys(perTopic).sort((a,b)=>(perTopic[a].ok/perTopic[a].tot)-(perTopic[b].ok/perTopic[b].tot)).forEach(t=>{
+    const d=perTopic[t]; const p=Math.round(d.ok/d.tot*100);
+    const col=p>=70?"var(--ok)":p>=50?"var(--gold)":"var(--bad)";
+    const el=document.createElement("div"); el.className="tbar";
+    el.innerHTML=`<div class="tl"><span>${t}</span><span class="pct" style="color:${col}">${d.ok}/${d.tot} · ${p}%</span></div>
+      <div class="track"><span style="width:${p}%;background:${col}"></span></div>`;
+    tb.appendChild(el);
+  });
+  renderReview("wrong");
+  showScreen("results");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+let reviewFilter="wrong";
+function renderReview(filter){
+  reviewFilter=filter;
+  $$("[data-rfilter]").forEach(b=>b.classList.toggle("on",b.dataset.rfilter===filter));
+  const box=$("#reviewBox"); box.innerHTML="";
+  let shown=0;
+  S.order.forEach(idx=>{
+    const q=QUESTIONS[idx];
+    const your=S.answers[idx];
+    const correct = your===q.c;
+    if(filter==="wrong" && correct) return;
+    shown++;
+    const el=document.createElement("div"); el.className="review-item";
+    let html=`<div class="rtopic">${q.tema}</div><div class="rq"><span class="rn">#${q.n}.</span> ${q.q}</div>`;
+    if(your===undefined){
+      html+=`<div class="ans-line your"><span class="lab">Sin responder</span></div>`;
+    } else if(!correct){
+      html+=`<div class="ans-line your"><span class="lab">Tú: ${KEYS[your]})</span><span>${q.opts[your]}</span></div>`;
+    }
+    html+=`<div class="ans-line right"><span class="lab">Correcta: ${KEYS[q.c]})</span><span>${q.opts[q.c]}</span></div>`;
+    html+=`<div class="rexp">💡 ${q.exp}</div>`;
+    el.innerHTML=html; box.appendChild(el);
+  });
+  if(shown===0) box.innerHTML=`<div style="text-align:center;padding:18px;color:var(--ok);font-weight:600">¡Perfecto! No fallaste ninguna. 🎉</div>`;
+}
+$$("[data-rfilter]").forEach(b=>b.onclick=()=>renderReview(b.dataset.rfilter));
+
+$("#retryWrongBtn").onclick=()=>{
+  const wrong=S.order.filter(idx=>S.answers[idx]!==QUESTIONS[idx].c);
+  if(!wrong.length){ alert("No tienes fallos que repetir 🎉"); return; }
+  S={mode:S.mode, order:cfg.shuffle?shuffleArr([...wrong]):wrong, answers:{}, flags:{}, pos:0, finished:false};
+  saveSession(); showScreen("quiz"); renderQuestion();
+};
+$("#newTestBtn").onclick=()=>{ store.del(LS_SESSION); S=null; showScreen("setup"); refreshResume(); };
+
+/* ====== reanudar ====== */
+function refreshResume(){
+  const sess=loadSession();
+  const box=$("#resumeBox");
+  if(sess && !sess.finished && sess.order && sess.order.length){
+    const done=Object.keys(sess.answers).length;
+    $("#resumeInfo").textContent=`Modo ${sess.mode==="study"?"estudio":"examen"} · ${done}/${sess.order.length} respondidas`;
+    box.classList.remove("hidden");
+  } else box.classList.add("hidden");
+}
+$("#resumeBtn").onclick=()=>{ S=loadSession(); if(S){ showScreen("quiz"); renderQuestion(); } };
+$("#discardBtn").onclick=()=>{ store.del(LS_SESSION); refreshResume(); };
+
+/* ====== navegacion de pantallas ====== */
+function showScreen(name){
+  ["setup","quiz","results","pdf"].forEach(s=>$("#"+s).classList.toggle("hidden",s!==name));
+}
+
+/* ====== visor PDF ====== */
+let prevScreen="setup";
+$("#openPdfBtn").onclick=()=>{
+  const cur=["setup","quiz","results"].find(s=>!$("#"+s).classList.contains("hidden"));
+  if(cur) prevScreen=cur;
+  showScreen("pdf");
+};
+$("#closePdfBtn").onclick=()=>{ showScreen(prevScreen); if(prevScreen==="setup") refreshResume(); };
+
+/* ====== init ====== */
+loadConfig(); renderChips(); updateNote(); refreshResume();
+</script>
+</body>
+</html>
