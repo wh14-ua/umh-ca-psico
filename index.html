@@ -364,9 +364,8 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
     </div>
 
     <div class="card">
-      <div class="sectitle">Guardar y ranking <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink2)">· opcional</span></div>
+      <div class="sectitle">Guardado y ranking <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink2)">· automático</span></div>
       <div class="saverow">
-        <button class="btn btn-ghost" id="saveTestBtn">💾 Guardar este test</button>
         <button class="btn btn-ghost" id="rankBtn2">🏆 Ranking</button>
       </div>
       <div class="savename" id="saveName" style="display:none">
@@ -481,7 +480,7 @@ function computeResult(){
   const topics = temas.size===TEMAS.length ? "Todos" : [...temas].join(" \u00b7 ");
   return {ok,blank,total,pct,wrong,topics,mode:(S&&S.mode)||"study"};
 }
-function revealName(){ const w=$("#saveName"); w.style.display="flex"; const i=$("#playerInput"); i.value=curPlayer(); $("#saveMsg").textContent=""; setTimeout(()=>i.focus(),40); }
+function revealName(){ const w=$("#saveName"); w.style.display="flex"; const i=$("#playerInput"); i.value=curPlayer(); $("#saveMsg").textContent="Pon tu nombre para guardar tus tests (solo la primera vez)."; setTimeout(()=>i.focus(),40); }
 async function saveAttempt(){
   if(!S) return;
   if(!ONLINE()){ $("#saveMsg").innerHTML='\u26A0 Para guardar online, pega tu <b>anon key</b> de Supabase en el archivo (l\u00ednea SUPA_KEY). El test funciona igual sin guardar.'; return; }
@@ -493,7 +492,7 @@ async function saveAttempt(){
     await sb.from("psico_attempts").insert({player:name,mode:r.mode,topics:r.topics,score:r.ok,total:r.total,blank:r.blank,pct:r.pct,wrong:r.wrong});
     $("#saveMsg").innerHTML='\u2713 Guardado como <b>'+esc(name)+'</b> \u00b7 <a href="#" id="chgName">cambiar nombre</a>';
     const c=$("#chgName"); if(c) c.onclick=e=>{e.preventDefault();revealName();};
-  }catch(e){ $("#saveMsg").textContent="No se pudo guardar (revisa la conexi\u00f3n o la clave)."; }
+  }catch(e){ $("#saveMsg").innerHTML='No se pudo guardar. <a href="#" id="retrySave">reintentar</a>'; const rr=$("#retrySave"); if(rr) rr.onclick=ev=>{ev.preventDefault();saveAttempt();}; }
 }
 async function renderRank2(){
   const box=$("#rankBox"); box.style.display="block"; box.innerHTML="Cargando\u2026";
@@ -507,7 +506,6 @@ async function renderRank2(){
   }catch(e){ box.innerHTML="No se pudo cargar el ranking."; }
 }
 (function(){
-  const sv=$("#saveTestBtn"); if(sv) sv.onclick=saveAttempt;
   const ps=$("#playerSave"); if(ps) ps.onclick=()=>{ const v=$("#playerInput").value.trim(); if(!v){ $("#playerInput").focus(); return; } store.set(SK_PLAYER,v); saveAttempt(); };
   const pi=$("#playerInput"); if(pi) pi.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("#playerSave").click(); } });
   const rb=$("#rankBtn2"); if(rb) rb.onclick=()=>{ const b=$("#rankBox"); if(b.style.display==="none"||!b.style.display){ renderRank2(); } else { b.style.display="none"; } };
@@ -742,6 +740,7 @@ function finish(){
   if($("#rankBox")){ $("#rankBox").style.display="none"; $("#rankBox").innerHTML=""; }
   showScreen("results");
   window.scrollTo({top:0,behavior:"smooth"});
+  saveAttempt();   // guardado automático al terminar
 }
 
 let reviewFilter="wrong";
