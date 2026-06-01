@@ -464,7 +464,7 @@ async function renderPDF(){
 
 /* ===================== Supabase (guardado OPCIONAL, al final) ===================== */
 const SUPA_URL="https://vwjdtnpxdtbpxzugmwyy.supabase.co";
-const SUPA_KEY="PEGA_AQUI_TU_ANON_KEY";   // Supabase -> Project Settings -> API -> "anon public"
+const SUPA_KEY="sb_publishable_8hMNzFloWxhGSNcO2x20DQ_IByzongd";   // Supabase -> Project Settings -> API -> "anon public"
 let sb=null; try{ if(window.supabase && SUPA_KEY && !SUPA_KEY.startsWith("PEGA_")) sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);}catch(e){}
 const ONLINE=()=>!!sb;
 const SK_PLAYER="psico_player";
