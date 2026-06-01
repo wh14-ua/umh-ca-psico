@@ -213,6 +213,16 @@ header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:1
 .histlist .hl .hs{color:var(--ink2);font-size:.8rem;margin-top:2px}
 .histlist .hp{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;flex:none}
 .histlist .hempty{color:var(--ink2);opacity:.85;padding:8px 0;font-size:.9rem}
+.histlist .hitem{border-bottom:1px dashed var(--line)} .histlist .hitem:last-child{border-bottom:0}
+.histlist .hrow{border-bottom:0;cursor:pointer}
+.hdetail{padding:2px 0 12px}
+.qd{border-left:2px solid var(--line);padding:5px 0 5px 12px;margin:8px 0}
+.qd .qdh{font-size:.8rem;color:var(--ink2);font-weight:600}
+.qd .qdh .qdt{color:var(--teal)}
+.qd .qdq{font-family:'Fraunces',serif;font-size:.98rem;margin:3px 0;line-height:1.3}
+.qd .qda{font-size:.86rem;color:var(--ink)}
+.qd .qdc{font-size:.86rem;color:var(--ok)}
+.dok{color:var(--ok);font-weight:700} .dko{color:var(--bad);font-weight:700} .dno{color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -470,15 +480,15 @@ const SK_PLAYER="psico_player";
 function curPlayer(){ return store.get(SK_PLAYER)||""; }
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 function computeResult(){
-  let ok=0,blank=0; const wrong=[]; const temas=new Set();
+  let ok=0,blank=0; const wrong=[]; const temas=new Set(); const questions=[];
   S.order.forEach(idx=>{ const q=QUESTIONS[idx]; temas.add(q.tema);
-    if(!(idx in S.answers)) blank++;
-    else if(S.answers[idx]===q.c) ok++;
-    else wrong.push(q.n);
+    const tu=(idx in S.answers)?S.answers[idx]:null; const good=(tu===q.c);
+    if(tu===null) blank++; else if(good) ok++; else wrong.push(q.n);
+    questions.push({n:q.n,tema:q.tema,q:q.q,opts:q.opts,tu:tu,c:q.c,ok:good});
   });
   const total=S.order.length, pct=total?Math.round(ok/total*100):0;
   const topics = temas.size===TEMAS.length ? "Todos" : [...temas].join(" \u00b7 ");
-  return {ok,blank,total,pct,wrong,topics,mode:(S&&S.mode)||"study"};
+  return {ok,blank,total,pct,wrong,topics,questions,mode:(S&&S.mode)||"study"};
 }
 function revealName(){ const w=$("#saveName"); w.style.display="flex"; const i=$("#playerInput"); i.value=curPlayer(); $("#saveMsg").textContent="Pon tu nombre para guardar tus tests (solo la primera vez)."; setTimeout(()=>i.focus(),40); }
 async function saveAttempt(){
@@ -488,8 +498,9 @@ async function saveAttempt(){
   const r=computeResult();
   $("#saveName").style.display="none"; $("#saveMsg").textContent="Guardando\u2026";
   try{
-    await sb.from("psico_players").upsert({name,last_seen:new Date().toISOString()},{onConflict:"name"});
-    await sb.from("psico_attempts").insert({player:name,mode:r.mode,topics:r.topics,score:r.ok,total:r.total,blank:r.blank,pct:r.pct,wrong:r.wrong});
+    const {error:e1}=await sb.from("psico_players").upsert({name,last_seen:new Date().toISOString()},{onConflict:"name"});
+    const {error:e2}=await sb.from("psico_attempts").insert({player:name,mode:r.mode,topics:r.topics,score:r.ok,total:r.total,blank:r.blank,pct:r.pct,wrong:r.wrong,questions:r.questions});
+    if(e1||e2){ const m=((e1&&e1.message)||(e2&&e2.message)||"error"); $("#saveMsg").innerHTML='No se pudo guardar: <b>'+esc(m)+'</b> <a href="#" id="retrySave">reintentar</a>'; const rr=$("#retrySave"); if(rr) rr.onclick=ev=>{ev.preventDefault();saveAttempt();}; return; }
     $("#saveMsg").innerHTML='\u2713 Guardado como <b>'+esc(name)+'</b> \u00b7 <a href="#" id="chgName">cambiar nombre</a>';
     const c=$("#chgName"); if(c) c.onclick=e=>{e.preventDefault();revealName();};
   }catch(e){ $("#saveMsg").innerHTML='No se pudo guardar. <a href="#" id="retrySave">reintentar</a>'; const rr=$("#retrySave"); if(rr) rr.onclick=ev=>{ev.preventDefault();saveAttempt();}; }
@@ -498,7 +509,7 @@ async function renderRank2(){
   const box=$("#rankBox"); box.style.display="block"; box.innerHTML="Cargando\u2026";
   if(!ONLINE()){ box.innerHTML="Conecta Supabase (pega la anon key) para ver el ranking."; return; }
   try{
-    const {data}=await sb.from("psico_leaderboard").select("*").order("best_pct",{ascending:false}).limit(50);
+    const {data,error}=await sb.from("psico_leaderboard").select("*").order("best_pct",{ascending:false}).limit(50); if(error){ box.innerHTML="Error: "+esc(error.message); return; }
     if(!data||!data.length){ box.innerHTML="A\u00fan no hay tests guardados."; return; }
     const me=curPlayer(); let h="";
     data.forEach((r,i)=>{ h+='<div class="rrow'+(r.player===me?" me":"")+'"><span class="nm">'+(i+1)+". "+esc(r.player)+'</span><span class="vl">'+(r.best_pct||0)+'% <small>\u00b7 '+(r.tests||0)+" tests \u00b7 media "+(r.avg_pct||0)+'%</small></span></div>'; });
@@ -808,11 +819,19 @@ $("#closePdfBtn").onclick=()=>{ showScreen(prevScreen); if(prevScreen==="setup")
 /* ====== consulta: mis tests + ranking ====== */
 function _fmtDate(iso){ try{ const d=new Date(iso),p=n=>(''+n).padStart(2,'0'); return p(d.getDate())+'/'+p(d.getMonth()+1)+' '+p(d.getHours())+':'+p(d.getMinutes()); }catch(e){ return ''; } }
 function _rankHTML(data, me){ let h=''; data.forEach((r,i)=>{ h+='<div class="rrow'+(r.player===me?' me':'')+'"><span class="nm">'+(i+1)+'. '+esc(r.player)+'</span><span class="vl">'+(r.best_pct||0)+'% <small>\u00b7 '+(r.tests||0)+' tests \u00b7 media '+(r.avg_pct||0)+'%</small></span></div>'; }); return h; }
+function qDetailHTML(qs){
+  if(!qs||!qs.length) return '<div class="hempty">Sin detalle de preguntas guardado para este test.</div>';
+  let h=''; qs.forEach(x=>{
+    const t=(x.tu===null||x.tu===undefined)?'<span class="dno">en blanco</span>':(KEYS[x.tu]+') '+esc((x.opts&&x.opts[x.tu])||''));
+    h+='<div class="qd"><div class="qdh">'+(x.ok?'<span class="dok">&#10003;</span>':'<span class="dko">&#10007;</span>')+' #'+x.n+' \u00b7 <span class="qdt">'+esc(x.tema||'')+'</span></div><div class="qdq">'+esc(x.q||'')+'</div><div class="qda">Tu respuesta: '+t+'</div>'+(x.ok?'':'<div class="qdc">Correcta: '+KEYS[x.c]+') '+esc((x.opts&&x.opts[x.c])||'')+'</div>')+'</div>';
+  });
+  return h;
+}
 async function loadConsulta(){
   const box=$("#rankBox3"), my=$("#myTests"), nameCard=$("#consultaName");
   if(!ONLINE()){ box.innerHTML='Conecta Supabase (pega la anon key en el archivo) para consultar.'; my.innerHTML='<div class="hempty">\u2014</div>'; nameCard.style.display='none'; return; }
   box.innerHTML='Cargando\u2026';
-  try{ const {data}=await sb.from('psico_leaderboard').select('*').order('best_pct',{ascending:false}).limit(50);
+  try{ const {data,error}=await sb.from('psico_leaderboard').select('*').order('best_pct',{ascending:false}).limit(50); if(error){ box.innerHTML='Error: '+esc(error.message); return; }
        box.innerHTML=(data&&data.length)?_rankHTML(data,curPlayer()):'<div class="hempty">A\u00fan no hay tests guardados.</div>'; }
   catch(e){ box.innerHTML='No se pudo cargar el ranking.'; }
   const name=curPlayer();
@@ -823,11 +842,12 @@ async function loadConsulta(){
 async function loadMyTests(name){
   const my=$("#myTests"); my.innerHTML='<div class="hempty">Cargando\u2026</div>';
   try{
-    const {data}=await sb.from('psico_attempts').select('played_at,mode,topics,score,total,blank,pct').eq('player',name).order('played_at',{ascending:false}).limit(100);
+    const {data,error}=await sb.from('psico_attempts').select('*').eq('player',name).order('played_at',{ascending:false}).limit(100); if(error){ my.innerHTML='Error: '+esc(error.message); return; }
     if(!data||!data.length){ my.innerHTML='<div class="hempty">No hay tests guardados con el nombre \u00ab'+esc(name)+'\u00bb.</div>'; return; }
-    let h=''; data.forEach(r=>{ const col=r.pct>=70?'var(--ok)':r.pct>=50?'var(--gold)':'var(--bad)';
-      h+='<div class="hrow"><div class="hl"><div class="hd">'+esc(_fmtDate(r.played_at))+' \u00b7 '+(r.mode==='exam'?'Examen':'Estudio')+'</div><div class="hs">'+esc(r.topics||'Todos')+' \u00b7 '+r.score+'/'+r.total+(r.blank?(' \u00b7 '+r.blank+' en blanco'):'')+'</div></div><div class="hp" style="color:'+col+'">'+r.pct+'%</div></div>'; });
+    let h=''; data.forEach((r,i)=>{ const col=r.pct>=70?'var(--ok)':r.pct>=50?'var(--gold)':'var(--bad)';
+      h+='<div class="hitem"><div class="hrow" data-i="'+i+'"><div class="hl"><div class="hd">'+esc(_fmtDate(r.played_at))+' \u00b7 '+(r.mode==='exam'?'Examen':'Estudio')+'</div><div class="hs">'+esc(r.topics||'Todos')+' \u00b7 '+r.score+'/'+r.total+(r.blank?(' \u00b7 '+r.blank+' en blanco'):'')+' \u00b7 ver preguntas \u25be</div></div><div class="hp" style="color:'+col+'">'+r.pct+'%</div></div><div class="hdetail" id="hd'+i+'" style="display:none">'+qDetailHTML(r.questions)+'</div></div>'; });
     my.innerHTML=h;
+    my.querySelectorAll('.hrow').forEach(row=>{ row.onclick=()=>{ const d=$("#hd"+row.getAttribute('data-i')); if(d) d.style.display=(d.style.display==='none')?'block':'none'; }; });
   }catch(e){ my.innerHTML='<div class="hempty">No se pudieron cargar tus tests.</div>'; }
 }
 $("#openConsultaBtn").onclick=()=>{ const cur=["setup","quiz","results"].find(s=>!$("#"+s).classList.contains("hidden")); if(cur) prevScreen=cur; showScreen("consulta"); loadConsulta(); };
